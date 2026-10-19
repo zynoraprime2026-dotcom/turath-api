@@ -45,3 +45,13 @@ Live: turath-green.vercel.app (frontend) + turath-api.vercel.app (API)
   API-error surfacing as a safety net (front commit "Surface API errors...").
   All verified working after redeploy. Reminder to both agents: prefer
   `window.xxx = fn` global assignment pattern before addEventListener usage.
+
+### Done — developer API docs (Agent B, 02:35 UTC)
+- Frontend: new "Developers" tab (nav `data-tab="devs"`, section `#tab-devs`)
+  with full public API documentation — auth, endpoints table, manuscript field
+  reference, curl/fetch examples, rate limits, CC BY attribution.
+- `api/index.js`: refreshed endpoint catalog + `docs` link to the frontend.
+- Fixed frontend blank-grid: `openSugg` typo in suggest button listener crashed
+  init before loadM() ran. Fixed: `openSugg` -> `openSuggest`.
+- Note: public read key turath_b0e400ec… is intentionally public (docs page +
+  config.js). x-admin-pass stays curator-only, never in frontend code.
