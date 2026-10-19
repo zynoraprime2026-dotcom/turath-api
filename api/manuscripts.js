@@ -9,11 +9,15 @@ export default async function handler(req, res) {
       const q = req.query || {};
       const where = [];
       const params = [];
-      if (q.q) { params.push('%' + q.q.toLowerCase() + '%'); where.push(`(LOWER(title) LIKE $${params.length} OR LOWER(author) LIKE $${params.length} OR LOWER(description) LIKE $${params.length})`); }
+      if (q.q) { params.push('%' + q.q.toLowerCase() + '%'); where.push(`(LOWER(title) LIKE $${params.length} OR LOWER(title_ar) LIKE $${params.length} OR LOWER(author) LIKE $${params.length} OR LOWER(description) LIKE $${params.length} OR LOWER(description_ar) LIKE $${params.length} OR LOWER(subject) LIKE $${params.length} OR LOWER(region) LIKE $${params.length} OR LOWER(holding) LIKE $${params.length})`); }
       for (const f of ['language', 'subject', 'region', 'script']) {
         if (q[f]) { params.push(q[f]); where.push(`${f} = $${params.length}`); }
       }
       if (q.century) { params.push(parseInt(q.century) || 0); where.push(`century = $${params.length}`); }
+      if (q.centuryMin) { params.push(parseInt(q.centuryMin) || 0); where.push(`century >= $${params.length}`); }
+      if (q.centuryMax) { params.push(parseInt(q.centuryMax) || 0); where.push(`century <= $${params.length}`); }
+      if (q.readable === 'true') where.push(`read_url <> ''`);
+      if (q.hasImage === 'true') where.push(`image_url <> ''`);
       const wsql = where.length ? ' WHERE ' + where.join(' AND ') : '';
       const total = await withDb(async c => parseInt((await c.query('SELECT COUNT(*) AS n FROM manuscripts' + wsql, params)).rows[0].n));
       const page = Math.max(1, parseInt(q.page) || 1);

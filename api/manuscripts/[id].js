@@ -10,7 +10,12 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const row = await withDb(async c => (await c.query('SELECT * FROM manuscripts WHERE id=$1', [id])).rows[0]);
       if (!row) { send(res, 404, { error: 'Manuscript not found' }); return; }
-      send(res, 200, { manuscript: mapM(row) });
+      const rel = await withDb(async c => (await c.query(
+        `SELECT id, title, title_ar, century, subject, region, image_url, read_url FROM manuscripts
+         WHERE id <> $1 AND ((subject = $2 AND subject <> '') OR (region = $3 AND region <> ''))
+         ORDER BY century NULLS LAST, title LIMIT 4`,
+        [id, row.subject || '', row.region || ''])).rows);
+      send(res, 200, { manuscript: mapM(row), related: rel.map(r => ({ id: r.id, title: r.title, titleAr: r.title_ar, century: r.century, subject: r.subject, region: r.region, imageUrl: r.image_url, readUrl: r.read_url })) });
       return;
     }
     if (req.method === 'PUT') {
