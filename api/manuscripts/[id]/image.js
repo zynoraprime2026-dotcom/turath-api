@@ -1,5 +1,5 @@
 const { put } = require('@vercel/blob');
-const { withDb, send, guard } = require('../../../_lib');
+const { withDb, send, guard } = require('../../_lib');
 
 // ---------- config ----------
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5MB
