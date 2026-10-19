@@ -32,11 +32,12 @@ export default async function handler(req, res) {
       const title = String(b.title || '').trim();
       if (!title) { send(res, 400, { error: 'title is required' }); return; }
       const row = await withDb(async c => (await c.query(
-        `INSERT INTO historical_events (title, year_hijri, year_gregorian, category, region, description, source_url)
-         VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
-        [title.slice(0, 300), parseInt(b.yearHijri) || null, parseInt(b.yearGregorian) || null,
+        `INSERT INTO historical_events (title, title_ar, year_hijri, year_gregorian, category, region, description, description_ar, sources, source_url)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
+        [title.slice(0, 300), String(b.titleAr || '').slice(0, 300), parseInt(b.yearHijri) || null, parseInt(b.yearGregorian) || null,
          String(b.category || '').slice(0, 80), String(b.region || '').slice(0, 100),
-         String(b.description || '').slice(0, 4000), String(b.sourceUrl || '').slice(0, 500)]
+         String(b.description || '').slice(0, 4000), String(b.descriptionAr || '').slice(0, 4000),
+         String(b.sources || '').slice(0, 2000), String(b.sourceUrl || '').slice(0, 500)]
       )).rows[0]);
       send(res, 201, { ok: true, event: mapE(row) });
       return;

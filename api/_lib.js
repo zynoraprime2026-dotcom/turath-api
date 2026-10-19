@@ -33,6 +33,13 @@ async function withDb(fn) {
       source_url TEXT DEFAULT '',
       created_at TIMESTAMPTZ DEFAULT NOW()
     );
+    ALTER TABLE manuscripts ADD COLUMN IF NOT EXISTS title_ar TEXT DEFAULT '';
+    ALTER TABLE manuscripts ADD COLUMN IF NOT EXISTS description_ar TEXT DEFAULT '';
+    ALTER TABLE manuscripts ADD COLUMN IF NOT EXISTS chain TEXT DEFAULT '[]';
+    ALTER TABLE manuscripts ADD COLUMN IF NOT EXISTS sources TEXT DEFAULT '';
+    ALTER TABLE historical_events ADD COLUMN IF NOT EXISTS title_ar TEXT DEFAULT '';
+    ALTER TABLE historical_events ADD COLUMN IF NOT EXISTS description_ar TEXT DEFAULT '';
+    ALTER TABLE historical_events ADD COLUMN IF NOT EXISTS sources TEXT DEFAULT '';
     CREATE TABLE IF NOT EXISTS api_keys (
       key TEXT PRIMARY KEY,
       created_at TIMESTAMPTZ DEFAULT NOW()
@@ -77,7 +84,11 @@ function guard(req, res) {
   return true;
 }
 
-const mapM = m => ({ ...m, id: m.id, imageUrl: m.image_url || null, digitalUrl: m.digital_url || null });
-const mapE = e => ({ ...e, yearHijri: e.year_hijri, yearGregorian: e.year_gregorian, sourceUrl: e.source_url });
+const mapM = m => {
+  let chain = [];
+  try { chain = JSON.parse(m.chain || '[]'); } catch (e) {}
+  return { ...m, id: m.id, imageUrl: m.image_url || null, digitalUrl: m.digital_url || null, titleAr: m.title_ar || null, descriptionAr: m.description_ar || null, chain, sources: m.sources || null };
+};
+const mapE = e => ({ ...e, yearHijri: e.year_hijri, yearGregorian: e.year_gregorian, sourceUrl: e.source_url, titleAr: e.title_ar || null, descriptionAr: e.description_ar || null, sources: e.sources || null });
 
 module.exports = { withDb, send, readBody, guard, mapM, mapE };

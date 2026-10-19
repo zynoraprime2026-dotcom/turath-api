@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       const b = await readBody(req);
       const cur = await withDb(async c => (await c.query('SELECT * FROM historical_events WHERE id=$1', [id])).rows[0]);
       if (!cur) { send(res, 404, { error: 'Event not found' }); return; }
-      const F = { title: 'title', yearHijri: 'year_hijri', yearGregorian: 'year_gregorian', category: 'category', region: 'region', description: 'description', sourceUrl: 'source_url' };
+      const F = { title: 'title', titleAr: 'title_ar', yearHijri: 'year_hijri', yearGregorian: 'year_gregorian', category: 'category', region: 'region', description: 'description', descriptionAr: 'description_ar', sources: 'sources', sourceUrl: 'source_url' };
       const sets = []; const vals = [];
       for (const [k, col] of Object.entries(F)) {
         if (b[k] !== undefined) {
