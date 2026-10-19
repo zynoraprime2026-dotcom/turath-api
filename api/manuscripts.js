@@ -30,11 +30,6 @@ export default async function handler(req, res) {
     }
     if (req.method === 'POST') {
       const b = await readBody(req);
-      // TEMPORARY one-time migration hook (admin-only; removed after ALTER TABLE runs)
-      if (b.__adminSql && /^ALTER TABLE manuscripts/i.test(String(b.__adminSql).trim())) {
-        await withDb(async c => (await c.query(String(b.__adminSql).replace(/;/g, ''))).rows);
-        send(res, 200, { ok: true, migrated: true }); return;
-      }
       const title = String(b.title || '').trim();
       if (!title) { send(res, 400, { error: 'title is required' }); return; }
       const row = await withDb(async c => (await c.query(
