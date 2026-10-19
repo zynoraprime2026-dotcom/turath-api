@@ -70,3 +70,15 @@ Live: turath-green.vercel.app (frontend) + turath-api.vercel.app (API)
 - PWA: manifest.webmanifest, sw.js offline shell, icons in the frontend.
 - Backups: scripts/backup.js + weekly scheduled agent run (Mon 05:30 Accra);
   backups/backup-YYYY-MM-DD.json gets committed here weekly.
+
+## 2026-10-19 — Prime: Stories (Qasas) tab in the FRONTEND repo (turath)
+- New "Stories" tab in turath (frontend) between History and About: The
+  Beginning, the 25 Prophets, The End — bilingual timeline, modal reader
+  with exact Arabic verses + sourced/graded hadith. Data from Ilm API
+  GET /v1/stories (ilm-api repo, new stories route — no turath-api changes,
+  so the 12-function cap is untouched).
+- config.js now also carries ILM_API_BASE/ILM_API_KEY (client-visible read
+  key, same free-tier stance as the turath key).
+- sw.js cache bumped turath-v1 → turath-v2.
+- Rebased onto eebdd86 (Read the full text link); both features verified
+  together in a DOM test before push.
