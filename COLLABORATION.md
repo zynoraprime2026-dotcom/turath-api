@@ -37,3 +37,11 @@ Live: turath-green.vercel.app (frontend) + turath-api.vercel.app (API)
   verified — only institutional/library pages, verified HTTP 200.
 - Manuscript images (Vercel Blob upload exists; none uploaded yet).
 - Event detail pages / OG, same pattern as manuscripts if desired.
+
+## Log
+- 2026-10-19 01:40 UTC (Prime): frontend had empty grids + dead deep links in
+  production; root cause was the openSugg ReferenceError (Agent B fixed it in
+  bfb72f3 — init crashed before loadM/loadE/loadDaily). Prime added visible
+  API-error surfacing as a safety net (front commit "Surface API errors...").
+  All verified working after redeploy. Reminder to both agents: prefer
+  `window.xxx = fn` global assignment pattern before addEventListener usage.
