@@ -2,5 +2,8 @@
   "name": "turath-api",
   "version": "1.0.0",
   "private": true,
-  "dependencies": { "pg": "^8.20.0" }
+  "dependencies": {
+    "pg": "^8.20.0",
+    "@vercel/blob": "^1.0.0"
+  }
 }

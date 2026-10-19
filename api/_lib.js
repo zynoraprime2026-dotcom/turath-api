@@ -40,6 +40,18 @@ async function withDb(fn) {
     ALTER TABLE historical_events ADD COLUMN IF NOT EXISTS title_ar TEXT DEFAULT '';
     ALTER TABLE historical_events ADD COLUMN IF NOT EXISTS description_ar TEXT DEFAULT '';
     ALTER TABLE historical_events ADD COLUMN IF NOT EXISTS sources TEXT DEFAULT '';
+    CREATE TABLE IF NOT EXISTS suggestions (
+      id SERIAL PRIMARY KEY,
+      title TEXT NOT NULL,
+      author TEXT DEFAULT '',
+      language TEXT DEFAULT '',
+      subject TEXT DEFAULT '',
+      region TEXT DEFAULT '',
+      description TEXT DEFAULT '',
+      submitter TEXT DEFAULT '',
+      status TEXT DEFAULT 'pending',
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    );
     CREATE TABLE IF NOT EXISTS api_keys (
       key TEXT PRIMARY KEY,
       created_at TIMESTAMPTZ DEFAULT NOW()

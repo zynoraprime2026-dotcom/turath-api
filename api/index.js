@@ -9,7 +9,7 @@ export default async function handler(req, res) {
       service: 'Turath API',
       tagline: 'Islamic manuscripts and history database',
       database: db,
-      endpoints: ['/api/manuscripts', '/api/events', '/api/stats'],
+      endpoints: ['/api/manuscripts', '/api/manuscripts/random', '/api/manuscripts/:id/image (POST)', '/api/events', '/api/stats', '/api/suggestions', '/api/suggestions/:id'],
       auth: 'send header x-api-key (writes also need x-admin-pass)'
     });
   } catch (e) {
