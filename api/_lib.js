@@ -99,7 +99,7 @@ function guard(req, res) {
 const mapM = m => {
   let chain = [];
   try { chain = JSON.parse(m.chain || '[]'); } catch (e) {}
-  return { ...m, id: m.id, imageUrl: m.image_url || null, digitalUrl: m.digital_url || null, titleAr: m.title_ar || null, descriptionAr: m.description_ar || null, chain, sources: m.sources || null };
+  return { ...m, id: m.id, imageUrl: m.image_url || null, digitalUrl: m.digital_url || null, readUrl: m.read_url || null, titleAr: m.title_ar || null, descriptionAr: m.description_ar || null, chain, sources: m.sources || null };
 };
 const mapE = e => ({ ...e, yearHijri: e.year_hijri, yearGregorian: e.year_gregorian, sourceUrl: e.source_url, titleAr: e.title_ar || null, descriptionAr: e.description_ar || null, sources: e.sources || null });
 

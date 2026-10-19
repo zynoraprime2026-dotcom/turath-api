@@ -67,7 +67,8 @@ ${m.title_ar ? `<div class="ar">${esc(m.title_ar)}</div>` : ''}
 <div>${meta.map(([k, v]) => `<span class="chip"><b>${k}:</b> ${esc(v)}</span>`).join('')}</div>
 <p class="desc">${esc(m.description || '')}</p>
 ${m.description_ar ? `<p class="desc" dir="rtl">${esc(m.description_ar)}</p>` : ''}
-${m.digital_url ? `<p><a class="btn" href="${esc(m.digital_url)}" target="_blank" rel="noopener">View digitized copy →</a></p>` : ''}
+${m.digital_url ? `<p><a class="btn" href="${esc(m.digital_url)}" target="_blank" rel="noopener">View digitized manuscript →</a></p>` : ''}
+${m.read_url ? `<p><a class="btn" href="${esc(m.read_url)}" target="_blank" rel="noopener">Read the full text (free edition) →</a></p>` : ''}
 <a class="btn" href="${appUrl}">Open in Turath</a>
 <div class="foot">Part of the <a href="${SITE}">Turath</a> archive of Islamic manuscripts and history. Content is curated with respect.</div>
 </div>
