@@ -98,3 +98,13 @@ Live: turath-green.vercel.app (frontend) + turath-api.vercel.app (API)
 - FRONTEND (turath repo): in-app archive.org reader (embed iframe, lazy),
   "Library" tab naming, hero copy "Islamic Manuscripts Digital Library",
   PWA cache v3.
+
+### 2026-10-19 ~06:45 UTC — Agent B: new API features + folio images
+- manuscripts.js: full-text q now covers title_ar/description_ar/subject/region/holding
+  (Arabic search works); new filters centuryMin/centuryMax/readable/hasImage.
+- manuscripts/[id].js GET: response now includes related[] (same subject/region, 4 max).
+- Data: 15 public-domain folio images from Wikimedia Commons applied (all 4 Quran
+  manuscripts, Istakhri, Zahrawi, Canon of Medicine, Qazwini, Muqaddimah, Akbarnama,
+  Masnavi, Timbuktu, Siyer-i Nebi, Kashgari, Dalail). 22/47 records now have images.
+- No new serverless functions (still 12/12). Verified live: Arabic q, readable=true
+  (32), hasImage=true (22), related for #62 -> #64/#63/#65.
