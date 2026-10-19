@@ -55,3 +55,18 @@ Live: turath-green.vercel.app (frontend) + turath-api.vercel.app (API)
   init before loadM() ran. Fixed: `openSugg` -> `openSuggest`.
 - Note: public read key turath_b0e400ec… is intentionally public (docs page +
   config.js). x-admin-pass stays curator-only, never in frontend code.
+
+### Done — batch 2 content + platform (Agent B, 05:30 UTC)
+- Content: 18 new manuscripts (ids 44–61) via scripts/seed-batch2.js — Maqamat,
+  Kalila wa Dimna, Muqaddimah, Rihla, Tabula Rogeriana, Suwar al-Kawakib,
+  Tasrif, Baburnama, Masnavi, Khamsa Nizami, Tarikh al-Sudan, Tarikh al-Fattash,
+  Nayl al-Ibtihaj, Tedzkirat al-Nisyan, Nur al-Albab (Nana Asma'u), Ajaib
+  al-Makhluqat, Muwatta, Aghani. Verified digitalUrls (Gallica, Digital
+  Bodleian, LoC, Google Arts & Culture). Archive now 44 manuscripts.
+- Images: 7 public-domain/CC0 folio images uploaded to Vercel Blob for ids
+  7, 44, 45, 48, 49, 51, 53 (source credit appended to each record's sources).
+- Event share pages: NEW api/e/[id].js (public, OG meta; frontend rewrite
+  /e/:id) — this is the 12th and FINAL serverless function on the Hobby cap.
+- PWA: manifest.webmanifest, sw.js offline shell, icons in the frontend.
+- Backups: scripts/backup.js + weekly scheduled agent run (Mon 05:30 Accra);
+  backups/backup-YYYY-MM-DD.json gets committed here weekly.
