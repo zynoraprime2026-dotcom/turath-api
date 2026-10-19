@@ -1,4 +1,4 @@
-const { withDb, send } = require('../../_lib');
+const { withDb } = require('../_lib');
 
 // GET /api/e/:id — PUBLIC server-rendered event page (no API key needed).
 // Shareable URLs + OpenGraph previews via frontend rewrite:
