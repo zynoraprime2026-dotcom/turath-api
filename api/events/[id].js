@@ -1,4 +1,4 @@
-const { withDb, send, readBody, guard, mapE } = require('../../_lib');
+const { withDb, send, readBody, guard, mapE } = require('../_lib');
 
 // GET /api/events/:id
 // PUT /api/events/:id (admin)

@@ -1,4 +1,4 @@
-const { withDb, send, readBody, guard, mapM } = require('../../_lib');
+const { withDb, send, readBody, guard, mapM } = require('../_lib');
 
 // GET /api/manuscripts/:id
 // PUT /api/manuscripts/:id (admin) — partial update
