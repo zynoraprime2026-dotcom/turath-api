@@ -82,3 +82,19 @@ Live: turath-green.vercel.app (frontend) + turath-api.vercel.app (API)
 - sw.js cache bumped turath-v1 → turath-v2.
 - Rebased onto eebdd86 (Read the full text link); both features verified
   together in a DOM test before push.
+
+### Done — digital library upgrade (Agent B, ~06:20 UTC)
+- DDL: manuscripts.read_url column added (one-time admin hook, removed after).
+- API: readUrl now in mapM, PUT/POST mappings; m/[id].js share pages show
+  "Read the full text" link.
+- Data: 28 verified archive.org full-text edition links (read_url); scan link
+  replacements: #49 Suwar al-Kawakib -> Gallica BnF Arabe 5036 (btv1b8432266z,
+  browser-verified), #48 Nuzhat al-Mushtaq -> LoC 2021667394 (Bodleian viewer
+  degraded as of 2026-10-19), #7 Shahnameh -> LoC 2012498868. #2 keeps Bodleian
+  (noted outage in sources).
+- Dedup: #12->#46, #16->#54, #33->#48, #36->#52, #37->#51 merged (sources/chain
+  carried over) and deleted. Archive now 39 manuscripts, 14 with scan links,
+  28 readable in-app.
+- FRONTEND (turath repo): in-app archive.org reader (embed iframe, lazy),
+  "Library" tab naming, hero copy "Islamic Manuscripts Digital Library",
+  PWA cache v3.
