@@ -32,6 +32,12 @@ export default async function handler(req, res) {
       send(res, 200, { ok: true, manuscript: mapM(row) });
       return;
     }
+    if (req.method === 'DELETE') {
+      const deleted = await withDb(async c => (await c.query('DELETE FROM manuscripts WHERE id=$1 RETURNING *', [id])).rows[0]);
+      if (!deleted) { send(res, 404, { error: 'Manuscript not found' }); return; }
+      send(res, 200, { ok: true, deleted: mapM(deleted) });
+      return;
+    }
     send(res, 404, { error: 'Not found' });
   } catch (e) {
     send(res, 500, { error: 'Server error: ' + e.message });
