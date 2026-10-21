@@ -123,3 +123,12 @@ Live: turath-green.vercel.app (frontend) + turath-api.vercel.app (API)
   with thumbnails; audio player (preload=none) in the manuscript modal; admin form
   gains an Audio URL field; Developers tab documents audioUrl + topSearches.
   sw.js cache bumped v6 → v7. Verified in a jsdom boot test (no runtime errors).
+
+### 2026-10-21 ~09:50 UTC (audit addendum) — Ra One: full deployment audit
+- Audited live site + API end to end (endpoints, data, security, real-browser pass).
+- All green: endpoints OK, audio exactly on the 4 Quran mss with credits, search
+  logging works (incl. Arabic + zero-result queries), trending chips render live,
+  timeline groups all 47 mss across 13 centuries, no passcode leaks in public repos.
+- FIX: per-page cap was 50 and the timeline fetches the whole archive in one page —
+  it would have silently truncated at 51 manuscripts. Raised the GET /api/manuscripts
+  cap to 100 and the timeline fetch to per=100. Note: revisit if archive passes 100.
