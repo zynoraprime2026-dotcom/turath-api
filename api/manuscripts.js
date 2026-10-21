@@ -26,7 +26,7 @@ export default async function handler(req, res) {
         if (qs) { try { await withDb(async c => c.query('INSERT INTO search_logs (query, results) VALUES ($1, $2)', [qs, total])); } catch (e) {} }
       }
       const page = Math.max(1, parseInt(q.page) || 1);
-      const per = Math.min(50, Math.max(1, parseInt(q.per) || 12));
+      const per = Math.min(100, Math.max(1, parseInt(q.per) || 12));
       params.push(per); params.push((page - 1) * per);
       const rows = await withDb(async c => (await c.query('SELECT * FROM manuscripts' + wsql + ` ORDER BY century NULLS LAST, title LIMIT $${params.length - 1} OFFSET $${params.length}`, params)).rows);
       const facets = await withDb(async c => ({
