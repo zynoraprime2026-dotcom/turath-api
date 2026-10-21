@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       const b = await readBody(req);
       const cur = await withDb(async c => (await c.query('SELECT * FROM manuscripts WHERE id=$1', [id])).rows[0]);
       if (!cur) { send(res, 404, { error: 'Manuscript not found' }); return; }
-      const F = { title: 'title', titleAr: 'title_ar', author: 'author', dateWritten: 'date_written', century: 'century', language: 'language', script: 'script', subject: 'subject', region: 'region', holding: 'holding', description: 'description', descriptionAr: 'description_ar', chain: 'chain', sources: 'sources', digitalUrl: 'digital_url', readUrl: 'read_url', imageUrl: 'image_url' };
+      const F = { title: 'title', titleAr: 'title_ar', author: 'author', dateWritten: 'date_written', century: 'century', language: 'language', script: 'script', subject: 'subject', region: 'region', holding: 'holding', description: 'description', descriptionAr: 'description_ar', chain: 'chain', sources: 'sources', digitalUrl: 'digital_url', readUrl: 'read_url', imageUrl: 'image_url', audioUrl: 'audio_url' };
       const pre = k => k === 'century' ? (parseInt(b[k]) || null) : k === 'chain' ? JSON.stringify(Array.isArray(b[k]) ? b[k].slice(0, 20) : [String(b[k])]) : String(b[k]).slice(0, 4000);
       const sets = []; const vals = [];
       for (const [k, col] of Object.entries(F)) {

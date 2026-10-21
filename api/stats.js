@@ -12,7 +12,9 @@ export default async function handler(req, res) {
       bySubject: (await c.query("SELECT subject, COUNT(*) n FROM manuscripts WHERE subject <> '' GROUP BY subject ORDER BY n DESC LIMIT 10")).rows,
       byRegion: (await c.query("SELECT region, COUNT(*) n FROM manuscripts WHERE region <> '' GROUP BY region ORDER BY n DESC LIMIT 10")).rows,
       centuriesCovered: (await c.query('SELECT MIN(century) a, MAX(century) b FROM manuscripts WHERE century IS NOT NULL')).rows[0],
-      timeline: (await c.query('SELECT MIN(year_gregorian) a, MAX(year_gregorian) b FROM historical_events WHERE year_gregorian IS NOT NULL')).rows[0]
+      timeline: (await c.query('SELECT MIN(year_gregorian) a, MAX(year_gregorian) b FROM historical_events WHERE year_gregorian IS NOT NULL')).rows[0],
+      searchesLast30d: parseInt((await c.query("SELECT COUNT(*) n FROM search_logs WHERE created_at > NOW() - INTERVAL '30 days'")).rows[0].n),
+      topSearches: (await c.query("SELECT query, COUNT(*) n FROM search_logs WHERE created_at > NOW() - INTERVAL '30 days' GROUP BY query ORDER BY n DESC, query LIMIT 10")).rows.map(r => ({ query: r.query, n: parseInt(r.n) }))
     }));
     send(res, 200, { stats });
   } catch (e) {

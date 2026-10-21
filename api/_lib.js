@@ -55,7 +55,14 @@ async function withDb(fn) {
     CREATE TABLE IF NOT EXISTS api_keys (
       key TEXT PRIMARY KEY,
       created_at TIMESTAMPTZ DEFAULT NOW()
-    );`);
+    );
+    CREATE TABLE IF NOT EXISTS search_logs (
+      id SERIAL PRIMARY KEY,
+      query TEXT NOT NULL,
+      results INT DEFAULT 0,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    );
+    ALTER TABLE manuscripts ADD COLUMN IF NOT EXISTS audio_url TEXT DEFAULT '';`);
     return await fn(c);
   } finally { try { await c.end(); } catch (e) {} }
 }
@@ -99,7 +106,7 @@ function guard(req, res) {
 const mapM = m => {
   let chain = [];
   try { chain = JSON.parse(m.chain || '[]'); } catch (e) {}
-  return { ...m, id: m.id, imageUrl: m.image_url || null, digitalUrl: m.digital_url || null, readUrl: m.read_url || null, titleAr: m.title_ar || null, descriptionAr: m.description_ar || null, chain, sources: m.sources || null };
+  return { ...m, id: m.id, imageUrl: m.image_url || null, digitalUrl: m.digital_url || null, readUrl: m.read_url || null, audioUrl: m.audio_url || null, titleAr: m.title_ar || null, descriptionAr: m.description_ar || null, chain, sources: m.sources || null };
 };
 const mapE = e => ({ ...e, yearHijri: e.year_hijri, yearGregorian: e.year_gregorian, sourceUrl: e.source_url, titleAr: e.title_ar || null, descriptionAr: e.description_ar || null, sources: e.sources || null });
 

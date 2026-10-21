@@ -108,3 +108,18 @@ Live: turath-green.vercel.app (frontend) + turath-api.vercel.app (API)
   Masnavi, Timbuktu, Siyer-i Nebi, Kashgari, Dalail). 22/47 records now have images.
 - No new serverless functions (still 12/12). Verified live: Arabic q, readable=true
   (32), hasImage=true (22), related for #62 -> #64/#63/#65.
+
+### 2026-10-21 ~09:45 UTC (Africa/Accra) — Ra One: search analytics, audio recitations, library timeline
+- Audio recitations: `audio_url` column added (DDL in _lib.js); mapM/POST/PUT mappings expose
+  `audioUrl`. `scripts/seed-audio.js` applies verified Wikimedia Commons recitations
+  (Atcovi, 3× CC0 + 1× CC BY-SA 4.0) to the 4 Quran manuscripts (#62 Maryam, #63 Al-Qadr,
+  #64 Ya-Sin, #65 Al-Kahf) with per-file credit appended to `sources`. Idempotent.
+- Search analytics: new `search_logs` table; `manuscripts.js` GET logs non-empty `q`
+  (query + result count, best-effort). `stats.js` now returns `searchesLast30d` +
+  `topSearches` (top 10, 30-day window). No new serverless functions (still 12/12).
+- FRONTEND (turath repo): "✦ Trending searches" chips on the Library tab (from
+  /api/stats topSearches, ≥2 hits, tap to search); Grid ⇄ Timeline view toggle —
+  timeline renders the whole archive grouped by AH century with ≈CE span, mini cards
+  with thumbnails; audio player (preload=none) in the manuscript modal; admin form
+  gains an Audio URL field; Developers tab documents audioUrl + topSearches.
+  sw.js cache bumped v6 → v7. Verified in a jsdom boot test (no runtime errors).
