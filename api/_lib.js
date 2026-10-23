@@ -62,6 +62,23 @@ async function withDb(fn) {
       results INT DEFAULT 0,
       created_at TIMESTAMPTZ DEFAULT NOW()
     );
+    CREATE TABLE IF NOT EXISTS scholars (
+      id SERIAL PRIMARY KEY,
+      slug TEXT UNIQUE,
+      name_en TEXT NOT NULL,
+      name_ar TEXT DEFAULT '',
+      full_name TEXT DEFAULT '',
+      era TEXT DEFAULT '',
+      birth_year INT,
+      death_year INT,
+      field TEXT DEFAULT '',
+      region TEXT DEFAULT '',
+      bio_en TEXT DEFAULT '',
+      bio_ar TEXT DEFAULT '',
+      works TEXT DEFAULT '',
+      source_url TEXT DEFAULT '',
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    );
     ALTER TABLE manuscripts ADD COLUMN IF NOT EXISTS audio_url TEXT DEFAULT '';`);
     return await fn(c);
   } finally { try { await c.end(); } catch (e) {} }
@@ -110,4 +127,7 @@ const mapM = m => {
 };
 const mapE = e => ({ ...e, yearHijri: e.year_hijri, yearGregorian: e.year_gregorian, sourceUrl: e.source_url, titleAr: e.title_ar || null, descriptionAr: e.description_ar || null, sources: e.sources || null });
 
-module.exports = { withDb, send, readBody, guard, mapM, mapE };
+// scholars table uses the same row -> camelCase convention
+const mapS = s => ({ ...s, slug: s.slug || null, nameEn: s.name_en, nameAr: s.name_ar || null, fullName: s.full_name || null, birthYear: s.birth_year || null, deathYear: s.death_year || null, bioEn: s.bio_en || null, bioAr: s.bio_ar || null, works: s.works || null, sourceUrl: s.source_url || null });
+
+module.exports = { withDb, send, readBody, guard, mapM, mapE, mapS };
