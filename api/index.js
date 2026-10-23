@@ -118,16 +118,29 @@ async function scholarDetail(id, res) {
     )).rows[0]);
   } catch (e) { row = null; }
   if (!row) row = builtinRows.find(s => s.slug === key) || null;
-  if (!row) { send(res, 404, { error: 'Scholar not found' }); return; }
+  if (!row) {
+    send(res, 404, { error: numeric
+      ? 'Scholar not found. Numeric ids are available once the scholars table is seeded; until then use slug lookup (e.g. /api/scholars/bukhari).'
+      : 'Scholar not found' });
+    return;
+  }
 
   const s = row.slug !== undefined && row.name_en ? mapS(row) : row; // db row -> camelCase; builtin already is
 
-  // related manuscripts: authored works in the archive (best-effort)
+  // related manuscripts: authored works in the archive (best-effort).
+  // match terms: English name, Arabic name, plus explicit aliases (s.match)
   let related = [];
   try {
+    const n = String(s.nameEn || '');
+    const derived = [];
+    for (const part of n.split(' (')) { // "Ibn Sina (Avicenna)" -> "Ibn Sina", "Avicenna)"
+      for (const seg of part.replace(')', '').split(/ of |, /)) if (seg.trim().length >= 4) derived.push(seg.trim());
+    }
+    const terms = [...new Set([n, s.nameAr, ...(s.match || []), ...derived].filter(Boolean))];
+    const conds = terms.map((_, i) => `author ILIKE ${i + 1}`).join(' OR ');
     related = await withDb(async c => (await c.query(
-      `SELECT id, title, title_ar, author, century, image_url FROM manuscripts WHERE author ILIKE $1 OR author ILIKE $2 ORDER BY century NULLS LAST LIMIT 10`,
-      ['%' + s.nameEn + '%', '%' + (s.nameAr || s.nameEn) + '%']
+      `SELECT id, title, title_ar, author, century, image_url FROM manuscripts WHERE ${conds} ORDER BY century NULLS LAST LIMIT 10`,
+      terms.map(t => '%' + t + '%')
     )).rows);
   } catch (e) {}
   send(res, 200, { scholar: s, related_manuscripts: related });
