@@ -130,6 +130,7 @@ const SCHOLARS = [
     birthYear: 1054, deathYear: 1122, field: 'Belles-lettres (Adab)', region: 'Basra, Iraq',
     bioEn: 'Author of the Maqamat, fifty tales of the eloquent trickster Abu Zayd that became the summit of classical Arabic prose. The 1237 Baghdad copy painted by Yahya al-Wasiti carries some of the finest illustrations of medieval Islamic art and features in this archive.',
     bioAr: 'أديب البصرة صاحب المقامات الخمسين، ذروة النثر الفني في العربية، ونسخة بغداد سنة 635هـ برسوم يحيى الواسطي من روائع التصوير الإسلامي.',
+    match: ['al-Hariri', 'al-Hariri of Basra'],
     works: 'Maqamat al-Hariri, Durrat al-Ghawwas', sourceUrl: ''
   },
   {
