@@ -164,3 +164,17 @@ User request: add biographies of the scholars (Turath API).
   (Hariri->Maqamat, Ibn Sina->Canon, Khwarizmi->Jabr, Ibn Khaldun->Muqaddimah,
   Jazuli->Dalail). (2) clearer 404 on numeric /api/scholars/:id while the
   table is unseeded. Also added `match` aliases in _scholars-data.js.
+
+## Done — Scholars tab in the frontend (Ra One, 2026-10-23 ~07:20 UTC)
+User request: make the scholar biographies visible in the Turath UI.
+- Frontend (turath repo), 5 commits (6c26805, 90e0957, 513c50e, a4187b3,
+  a13513b): new "Scholars" nav tab + section; loadS/renderS/showS in app.js
+  consuming GET /api/scholars and /api/scholars/:id; detail modal reuses the
+  existing #modal and shows bilingual bio, works and related manuscripts
+  (clicking one opens the manuscript detail via showM); i18n en/ar added;
+  SW cache bumped to v8.
+- loadS() runs at boot alongside loadM/loadE. Cards use inline onclick with
+  window.showS (global-assignment pattern per earlier init-crash lesson).
+- Verified live in a real browser: grid pre-fills at boot (22 scholars),
+  search + field filter work, Ibn Sina detail shows the Canon of Medicine
+  under "In this archive". No admin forms touched.
