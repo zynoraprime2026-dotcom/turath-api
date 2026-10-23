@@ -156,3 +156,11 @@ User request: add biographies of the scholars (Turath API).
   `scripts/seed-scholars.js` (needs TURATH_ADMIN_PASS) persists them.
 - Open idea: a Scholars tab in the frontend (turath repo) consuming
   these endpoints; not started there to avoid stepping on Agent B / Prime.
+- 2026-10-23 (Ra One, audit follow-up): full API + frontend sweep (all 14
+  endpoints, HTML share pages, CORS, auth, frontend Library/History/Developers
+  tabs) — all passing. Fixed two issues in the new scholars code:
+  (1) commit cc61124 wrote `ILIKE ${i}` instead of `ILIKE $${i}` -> invalid
+  SQL silently zeroed related_manuscripts; fixed in d0dd082, re-verified live
+  (Hariri->Maqamat, Ibn Sina->Canon, Khwarizmi->Jabr, Ibn Khaldun->Muqaddimah,
+  Jazuli->Dalail). (2) clearer 404 on numeric /api/scholars/:id while the
+  table is unseeded. Also added `match` aliases in _scholars-data.js.
