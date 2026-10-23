@@ -1,1 +1,7 @@
-{ "rewrites": [{ "source": "/", "destination": "/api" }] }
+{
+  "rewrites": [
+    { "source": "/", "destination": "/api" },
+    { "source": "/api/scholars", "destination": "/api/index.js?__route=scholars" },
+    { "source": "/api/scholars/:id", "destination": "/api/index.js?__route=scholars&__id=:id" }
+  ]
+}
