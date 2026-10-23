@@ -137,7 +137,7 @@ async function scholarDetail(id, res) {
       for (const seg of part.replace(')', '').split(/ of |, /)) if (seg.trim().length >= 4) derived.push(seg.trim());
     }
     const terms = [...new Set([n, s.nameAr, ...(s.match || []), ...derived].filter(Boolean))];
-    const conds = terms.map((_, i) => `author ILIKE ${i + 1}`).join(' OR ');
+    const conds = terms.map((_, i) => `author ILIKE $${i + 1}`).join(' OR ');
     related = await withDb(async c => (await c.query(
       `SELECT id, title, title_ar, author, century, image_url FROM manuscripts WHERE ${conds} ORDER BY century NULLS LAST LIMIT 10`,
       terms.map(t => '%' + t + '%')
