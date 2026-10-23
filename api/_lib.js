@@ -79,6 +79,25 @@ async function withDb(fn) {
       source_url TEXT DEFAULT '',
       created_at TIMESTAMPTZ DEFAULT NOW()
     );
+    CREATE TABLE IF NOT EXISTS rijal (
+      id SERIAL PRIMARY KEY,
+      slug TEXT UNIQUE,
+      name_en TEXT NOT NULL,
+      name_ar TEXT DEFAULT '',
+      full_name TEXT DEFAULT '',
+      generation TEXT DEFAULT '',
+      death_year INT,
+      grade_code TEXT DEFAULT '',
+      grade_en TEXT DEFAULT '',
+      grade_ar TEXT DEFAULT '',
+      teachers TEXT DEFAULT '[]',
+      students TEXT DEFAULT '[]',
+      region TEXT DEFAULT '',
+      bio_en TEXT DEFAULT '',
+      bio_ar TEXT DEFAULT '',
+      source TEXT DEFAULT '',
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    );
     ALTER TABLE manuscripts ADD COLUMN IF NOT EXISTS audio_url TEXT DEFAULT '';`);
     return await fn(c);
   } finally { try { await c.end(); } catch (e) {} }
@@ -130,4 +149,15 @@ const mapE = e => ({ ...e, yearHijri: e.year_hijri, yearGregorian: e.year_gregor
 // scholars table uses the same row -> camelCase convention
 const mapS = s => ({ ...s, slug: s.slug || null, nameEn: s.name_en, nameAr: s.name_ar || null, fullName: s.full_name || null, birthYear: s.birth_year || null, deathYear: s.death_year || null, bioEn: s.bio_en || null, bioAr: s.bio_ar || null, works: s.works || null, sourceUrl: s.source_url || null });
 
-module.exports = { withDb, send, readBody, guard, mapM, mapE, mapS };
+// rijal (ilm ar-rijal narrators) row -> camelCase
+const mapR = r => {
+  let teachers = [], students = [];
+  try { teachers = JSON.parse(r.teachers || '[]'); } catch (e) {}
+  try { students = JSON.parse(r.students || '[]'); } catch (e) {}
+  return { ...r, nameEn: r.name_en, nameAr: r.name_ar || null, fullName: r.full_name || null,
+    generation: r.generation || null, deathYear: r.death_year || null,
+    grade: { code: r.grade_code || null, en: r.grade_en || null, ar: r.grade_ar || null },
+    teachers, students, region: r.region || null, bioEn: r.bio_en || null, bioAr: r.bio_ar || null, source: r.source || null };
+};
+
+module.exports = { withDb, send, readBody, guard, mapM, mapE, mapS, mapR };
