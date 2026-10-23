@@ -132,3 +132,27 @@ Live: turath-green.vercel.app (frontend) + turath-api.vercel.app (API)
 - FIX: per-page cap was 50 and the timeline fetches the whole archive in one page —
   it would have silently truncated at 51 manuscripts. Raised the GET /api/manuscripts
   cap to 100 and the timeline fetch to per=100. Note: revisit if archive passes 100.
+
+## Done — scholars of the archive (Ra One, 2026-10-23 ~06:55 UTC)
+User request: add biographies of the scholars (Turath API).
+- New endpoints: `GET /api/scholars (?q,field,region,page,per)`,
+  `GET /api/scholars/:id` (numeric DB id or slug; includes
+  `related_manuscripts` matched by author name, best-effort),
+  `POST /api/scholars` (curator, upsert by slug),
+  `POST /api/scholars?seed=builtin` (curator, imports the bundled bios).
+- Routing stays inside the Hobby 12-function cap: handlers live in
+  `api/index.js` behind `?__route=scholars`, exposed by vercel.json
+  rewrites (`/api/scholars`, `/api/scholars/:id` -> `/api/index.js`).
+  `api/_scholars-data.js` is underscore-prefixed = excluded from the
+  function count, same as `_lib.js`.
+- `api/_lib.js`: added `scholars` table (slug, bilingual name/full name,
+  era, birth/death years, field, region, bio_en/bio_ar, works,
+  source_url) + `mapS` mapper. Additive only; no existing routes touched.
+- Content: 22 bilingual bios bundled in `api/_scholars-data.js` — the
+  four imams, the six hadith compilers, at-Tabari, al-Khwarizmi, Ibn
+  Sina, al-Biruni, al-Ghazali, al-Hariri, Ibn Rushd, an-Nawawi, Ibn
+  Khaldun, Ibn Kathir, Ibn Hajar, al-Jazuli. GETs fall back to these
+  while the table is empty, so the endpoint works immediately;
+  `scripts/seed-scholars.js` (needs TURATH_ADMIN_PASS) persists them.
+- Open idea: a Scholars tab in the frontend (turath repo) consuming
+  these endpoints; not started there to avoid stepping on Agent B / Prime.
